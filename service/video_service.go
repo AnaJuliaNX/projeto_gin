@@ -8,6 +8,7 @@ type VideoService interface {
 	FindAll() []tipos.Video
 }
 
+// Retorna no final um slice of videos
 type videoService struct {
 	videos []tipos.Video
 }

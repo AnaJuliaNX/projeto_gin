@@ -3,16 +3,22 @@
 <div class="album py-4 bg-light">
     <div class="container">
         <div class="row">
+            {{range .videos}}
             <div class="col-md-4">
                 <div class="card-body">
                     <p class="card-text">
-                        //tinha mais coisa aqui
-                        <h4>Titulo do video</h4>
-                        <p>Descrição do video</p>
+                        <iframe width="300" height="200"
+                        /* link do video do youtube */
+                        src="{{.URL}}"
+                        frameborder="0" allow="accelerometer; autoplay;
+                        encrypted-media; gyroscope; picture-in-picture"></iframe>
+                        <h4>{{.Titulo}}</h4>
+                        <p>{{.Descricao}}</p>
                     </p>
                 </div>
             </div>
         </div>
+        {{end}}
     </div>
 </div>
 

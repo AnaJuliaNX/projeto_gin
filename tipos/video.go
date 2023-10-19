@@ -15,7 +15,7 @@ type Pessoa struct {
 type Video struct {
 	//minimo de 2 e máximo de 30 caracteres.
 	//Só é um titulo válido se for preenchido com o que está no validator
-	Titulo string `json:"titulo" binding:"min=2,max=40" validate:"terra-do-nunca"`
+	Titulo string `json:"titulo" binding:"min=2,max=40"`
 	//sem minimo e máximo de 40 caracteres
 	Descricao string `json:"descricao" binding:"max=40"`
 	//campo obrigatório e espera uma url completa

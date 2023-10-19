@@ -67,12 +67,24 @@ func main() {
 
 		})
 	}
-
-	//rotas do HTML e CSS
+	/*
+		rotas do HTML e CSS
+		Se quiser ver isso na web é só abrir uma aba do navegador e digitar a rota
+		Nesse caso a rota é: http://localhost:8080/views/videos
+		Lembrar de verificar se ta no servidor correto
+	*/
 	viewRutes := server.Group("/view")
 	{
 		viewRutes.GET("/videos", VideoControlller.ShowAll)
 	}
 
-	server.Run(":8080")
+	//Inicialização do servidor com o Dockerfile
+	port := os.Getenv("PORTA")
+	if port == "" {
+		port = "5000"
+	}
+	server.Run(":" + port)
+
+	//Rota sem o Dockfile
+	//server.Run(":8080")
 }

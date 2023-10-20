@@ -9,7 +9,6 @@ import (
 	"projeto_gin/service"
 
 	"github.com/gin-gonic/gin"
-	gindump "github.com/tpkeeper/gin-dump"
 )
 
 var (
@@ -44,11 +43,8 @@ func main() {
 	//Para carregar os arquivos HTML
 	server.LoadHTMLGlob("templates/*.html")
 
-	server.Use(gin.Recovery(), middlewares.Logger(),
-		middlewares.AutenticacaoBasic(), gindump.Dump())
-
 	//todas as rotas da minha API
-	apiRoutes := server.Group("/api")
+	apiRoutes := server.Group("/api", middlewares.AutenticacaoBasic())
 	{
 		// Para buscar os videos já cadastrados
 		apiRoutes.GET("/videos", func(ctx *gin.Context) {
@@ -64,18 +60,12 @@ func main() {
 			} else {
 				ctx.JSON(http.StatusOK, gin.H{"message": "Video inserido é valido"})
 			}
-
 		})
 	}
-	/*
-		rotas do HTML e CSS
-		Se quiser ver isso na web é só abrir uma aba do navegador e digitar a rota
-		Nesse caso a rota é: http://localhost:8080/views/videos
-		Lembrar de verificar se ta no servidor correto
-	*/
-	viewRutes := server.Group("/view")
+
+	viewRotas := server.Group("/view")
 	{
-		viewRutes.GET("/videos", VideoControlller.ShowAll)
+		viewRotas.GET("/videos", VideoControlller.ShowAll)
 	}
 
 	//Inicialização do servidor com o Dockerfile
@@ -85,6 +75,12 @@ func main() {
 	}
 	server.Run(":" + port)
 
-	//Rota sem o Dockfile
-	//server.Run(":8080")
+	/*rotas do HTML e CSS
+	Se quiser ver isso na web é só abrir uma aba do navegador e digitar a rota
+	Nesse caso a rota é: http://localhost:8080/views/videos
+	Lembrar de verificar se ta no servidor correto
+
+	server.Run(":8080")
+	*/
+
 }

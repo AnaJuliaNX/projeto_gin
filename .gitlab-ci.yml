@@ -1,0 +1,30 @@
+stages: 
+  - compile #construir a aplicação
+  - test  #testar a aplicação
+  - deploy #subir a aplicação para o heroku
+
+build: 
+  stage: compile
+  image: golang:latest #especificar qual é a imagem
+  script: #especificando quais comandos vou usar
+    - go get -d -v   #mostra todas as dependencias do aquivo mod
+    - go build -o bin/golang-gin-poc -v . #compila a aplicação build
+
+test:
+  stage: test
+  image: golang:latest #especifica a imagem 
+  script:
+    - go test service/*.go #roda o teste
+
+staging: 
+  stage: deploy
+  script: 
+    - apt-get update -qy
+    - apt-get install -y ruby-dev
+    - gem instal dpl 
+    - dpl --provider=heroku --app=projeto-video-app --api-key=$HEROKU_API_KEY
+  enviroment:
+    name: Staging 
+    url: url criada no heruko 
+  only:
+    - ci-cd

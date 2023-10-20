@@ -1,1 +1,1 @@
-web: bin/golang-gin-poc
+web: bin/golang-gin-poc 

@@ -12,8 +12,12 @@ import (
 )
 
 var (
-	videoService     service.VideoService        = service.New()
-	VideoControlller controller.VideoControlller = controller.New(videoService)
+	videoService service.VideoService = service.New()
+	loginService service.LoginService = service.NewLoginService()
+	jwtService   service.JWTService   = service.NewJWTService()
+
+	videoController controller.VideoControlller = controller.New(videoService)
+	loginController controller.LoginController  = controller.NewLoginController(loginService, jwtService)
 )
 
 // Faz com que salve em um arquivo "gin.log" todas as vezes em que rodo uma rota
@@ -24,7 +28,7 @@ func SetupOutput() {
 
 func main() {
 	/*
-		 //Criada apenas para saber se estava funcionando tudo certo
+		 //Apenas para saber se estava rodando certo
 			server := gin.Default()
 		   	server.GET("/test", func(ctx *gin.Context) {
 		   		ctx.JSON(200, gin.H{
@@ -37,24 +41,37 @@ func main() {
 
 	server := gin.New()
 
+	server.Use(gin.Recovery(), gin.Logger())
+
 	//para carregar o arquivo CSS
 	server.Static("/css", "./templates/css")
-
 	//Para carregar os arquivos HTML
 	server.LoadHTMLGlob("templates/*.html")
 
-	//todas as rotas da minha API
+	//Endpoint de login: autorização + token criado
+	server.POST("/login", func(ctx *gin.Context) {
+		token := loginController.Login(ctx)
+		if token != "" {
+			ctx.JSON(http.StatusOK, gin.H{
+				"token": token,
+			})
+		} else {
+			ctx.JSON(http.StatusUnauthorized, nil)
+		}
+	})
+
+	//O middleware de autenticação se aplica só para as que tiverem "/api" na rota
 	apiRoutes := server.Group("/api", middlewares.AutenticacaoBasic())
 	{
 		// Para buscar os videos já cadastrados
 		apiRoutes.GET("/videos", func(ctx *gin.Context) {
-			ctx.JSON(200, VideoControlller.FindAll())
+			ctx.JSON(200, videoController.FindAll())
 		})
 
 		// Para cadastrar um video novo
 		apiRoutes.POST("/videos", func(ctx *gin.Context) {
 			//Lido com os erros caso tiver algum enquanto estiver salvando os dados do video
-			erro := VideoControlller.Save(ctx)
+			erro := videoController.Save(ctx)
 			if erro != nil {
 				ctx.JSON(http.StatusBadRequest, gin.H{"error": erro.Error()})
 			} else {
@@ -63,13 +80,14 @@ func main() {
 		})
 	}
 
+	//O que tiver "/view" na rota é publico, não precisa de autorização
 	viewRotas := server.Group("/view")
 	{
-		viewRotas.GET("/videos", VideoControlller.ShowAll)
+		viewRotas.GET("/videos", videoController.ShowAll)
 	}
 
 	//Inicialização do servidor com o Dockerfile
-	port := os.Getenv("PORTA")
+	port := os.Getenv("PORT")
 	if port == "" {
 		port = "5000"
 	}
@@ -82,5 +100,4 @@ func main() {
 
 	server.Run(":8080")
 	*/
-
 }

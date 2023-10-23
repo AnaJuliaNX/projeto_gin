@@ -2,17 +2,21 @@
  - using env:	export GIN_MODE=release
  - using code:	gin.SetMode(gin.ReleaseMode)
 
-[GIN-debug] GET    /css/*filepath            --> github.com/gin-gonic/gin.(*RouterGroup).createStaticHandler.func1 (1 handlers)
-[GIN-debug] HEAD   /css/*filepath            --> github.com/gin-gonic/gin.(*RouterGroup).createStaticHandler.func1 (1 handlers)
+[GIN-debug] GET    /css/*filepath            --> github.com/gin-gonic/gin.(*RouterGroup).createStaticHandler.func1 (3 handlers)
+[GIN-debug] HEAD   /css/*filepath            --> github.com/gin-gonic/gin.(*RouterGroup).createStaticHandler.func1 (3 handlers)
 [GIN-debug] Loaded HTML Templates (4): 
+	- 
 	- footer.html
 	- header.html
 	- index.html
-	- 
 
-[GIN-debug] GET    /api/videos               --> main.main.func1 (2 handlers)
-[GIN-debug] POST   /api/videos               --> main.main.func2 (2 handlers)
-[GIN-debug] GET    /view/videos              --> projeto_gin/controller.VideoControlller.ShowAll-fm (1 handlers)
+[GIN-debug] POST   /login                    --> main.main.func1 (3 handlers)
+[GIN-debug] GET    /api/videos               --> main.main.func2 (4 handlers)
+[GIN-debug] POST   /api/videos               --> main.main.func3 (4 handlers)
+[GIN-debug] GET    /view/videos              --> projeto_gin/controller.VideoControlller.ShowAll-fm (3 handlers)
 [GIN-debug] [WARNING] You trusted all proxies, this is NOT safe. We recommend you to set a value.
 Please check https://pkg.go.dev/github.com/gin-gonic/gin#readme-don-t-trust-all-proxies for details.
 [GIN-debug] Listening and serving HTTP on :5000
+[GIN] 2023/10/23 - 14:10:20 | 200 |     117.174µs |             ::1 | GET      "/api/videos"
+[GIN] 2023/10/23 - 14:10:24 | 200 |     277.681µs |             ::1 | POST     "/api/videos"
+[GIN] 2023/10/23 - 14:10:29 | 200 |      21.553µs |             ::1 | GET      "/api/videos"

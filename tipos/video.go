@@ -23,13 +23,3 @@ type Video struct {
 	//campo é obrigatório
 	Autor Pessoa `json:"autor" binding:"required"`
 }
-
-type StandartdClaims struct {
-	Audience  string `json:"aud,omitempy"`
-	ExpiresAt int64  `json:"exp,omitempy"` //Quando o token expira
-	Id        string `json:"jti,omitempy"` //Id basico
-	IssuedAt  int64  `json:"iat,omitempy"`
-	Issuer    string `json:"iss,omitempy"`
-	NotBefore int64  `json:"nbf,omitempy"`
-	Subject   string `json:"sub,omitempy"`
-}

@@ -1,6 +1,7 @@
 package service
 
 import (
+	"projeto_gin/repositorio"
 	"projeto_gin/tipos"
 	"testing"
 
@@ -25,7 +26,7 @@ func getVideos() tipos.Video {
 
 // fazendo o teste do video
 func TestFindAll(t *testing.T) {
-	service := New()
+	service := New(repositorio.NewVideoRepositorio())
 
 	service.Save(getVideos()) //Buscando os salvos
 

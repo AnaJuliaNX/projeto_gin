@@ -6,15 +6,17 @@ import (
 	"os"
 	"projeto_gin/controller"
 	"projeto_gin/middlewares"
+	"projeto_gin/repositorio"
 	"projeto_gin/service"
 
 	"github.com/gin-gonic/gin"
 )
 
 var (
-	videoService service.VideoService = service.New()
-	loginService service.LoginService = service.NewLoginService()
-	jwtService   service.JWTService   = service.NewJWTService()
+	videoRepositorio repositorio.VideoRepositorio = repositorio.NewVideoRepositorio()
+	videoService     service.VideoService         = service.New(videoRepositorio)
+	loginService     service.LoginService         = service.NewLoginService()
+	jwtService       service.JWTService           = service.NewJWTService()
 
 	videoController controller.VideoControlller = controller.New(videoService)
 	loginController controller.LoginController  = controller.NewLoginController(loginService, jwtService)
@@ -36,8 +38,10 @@ func main() {
 		   		})
 		   	})
 	*/
+	//SetupOutput()
 
-	SetupOutput()
+	//Para fechara  conexão com o banco ao final da execução do código ou ao dar erro
+	defer videoRepositorio.CloseDB()
 
 	server := gin.New()
 
@@ -76,6 +80,24 @@ func main() {
 				ctx.JSON(http.StatusBadRequest, gin.H{"error": erro.Error()})
 			} else {
 				ctx.JSON(http.StatusOK, gin.H{"message": "Video inserido é valido"})
+			}
+		})
+
+		apiRoutes.PUT("/videos/:id", func(ctx *gin.Context) {
+			erro := videoController.Update(ctx)
+			if erro != nil {
+				ctx.JSON(http.StatusBadRequest, gin.H{"error": erro.Error()})
+			} else {
+				ctx.JSON(http.StatusOK, gin.H{"message": "Video atualizado com sucesso"})
+			}
+		})
+
+		apiRoutes.DELETE("/videos/:id", func(ctx *gin.Context) {
+			erro := videoController.Delete(ctx)
+			if erro != nil {
+				ctx.JSON(http.StatusBadRequest, gin.H{"error": erro.Error()})
+			} else {
+				ctx.JSON(http.StatusOK, gin.H{"message": "Video deletado com sucesso"})
 			}
 		})
 	}

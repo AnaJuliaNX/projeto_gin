@@ -22,7 +22,7 @@ type bancodedados struct {
 func NewVideoRepositorio() VideoRepositorio {
 	db, erro := gorm.Open("mysql", "youtuber:senhadele@/videos?charset=utf8&parseTime=True&loc=Local")
 	if erro != nil {
-		panic("Falha ao fazer a coneção com o banco de dados")
+		panic("Falha ao fazer a conexão com o banco de dados")
 	}
 	db.AutoMigrate(&tipos.Video{}, &tipos.Pessoa{})
 	return &bancodedados{

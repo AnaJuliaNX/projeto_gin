@@ -1,7 +1,6 @@
 package main
 
 import (
-	"io"
 	"net/http"
 	"os"
 	"projeto_gin/controller"
@@ -23,10 +22,10 @@ var (
 )
 
 // Faz com que salve em um arquivo "gin.log" todas as vezes em que rodo uma rota
-func SetupOutput() {
-	f, _ := os.Create("gin.log")
-	gin.DefaultWriter = io.MultiWriter(f, os.Stdout)
-}
+// func SetupOutput() {
+// 	f, _ := os.Create("gin.log")
+// 	gin.DefaultWriter = io.MultiWriter(f, os.Stdout)
+// }
 
 func main() {
 	/*
